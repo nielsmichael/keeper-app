@@ -14,6 +14,12 @@ function App() {
     });
   }
 
+  function deleteNote(note) {
+    setNotes(() => {
+      return notes.filter((value, index) => note !== index);
+    });
+  }
+
   return (
     <div>
       <Header />
@@ -25,6 +31,7 @@ function App() {
             id={index}
             title={value.title}
             content={value.content}
+            onDelete={deleteNote}
           />
         );
       })}
