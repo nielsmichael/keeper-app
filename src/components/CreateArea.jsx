@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import Zoom from "@mui/material/Zoom";
 
 function CreateArea(props) {
+  const [isClicked, setIsClicked] = useState(false);
   const [newNote, setNewNote] = useState({
     title: "",
-    content: ""
+    content: "",
   });
 
   function handleChange(e) {
@@ -13,7 +17,7 @@ function CreateArea(props) {
         //spread all current existing operators in newNote
         ...prev,
         //destructured name takes value of whichever input calls handleChange
-        [name]: value
+        [name]: value,
       };
     });
     console.log(newNote);
@@ -24,7 +28,7 @@ function CreateArea(props) {
     setNewNote(() => {
       return {
         title: "",
-        content: ""
+        content: "",
       };
     });
     event.preventDefault();
@@ -32,21 +36,30 @@ function CreateArea(props) {
 
   return (
     <div>
-      <form>
-        <input
-          name="title"
-          onChange={handleChange}
-          placeholder="Title"
-          value={newNote.title}
-        />
+      <form className="create-note">
+        {isClicked && ( //use && operator instead of ? input : null
+          <input
+            name="title"
+            onChange={handleChange}
+            placeholder="Title"
+            value={newNote.title}
+          />
+        )}
         <textarea
           name="content"
+          onClick={() => {
+            setIsClicked(true);
+          }}
           onChange={handleChange}
           placeholder="Take a note..."
           value={newNote.content}
-          rows="3"
+          rows={isClicked ? "3" : "1"}
         />
-        <button onClick={submitNote}>Add</button>
+        <Zoom in={isClicked}>
+          <Fab onClick={submitNote}>
+            <AddIcon />
+          </Fab>
+        </Zoom>
       </form>
     </div>
   );
